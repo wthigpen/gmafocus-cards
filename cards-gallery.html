@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GMA Focus Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* GMA Focus approved-card gallery. Put it on a Cards page, or on a player profile with a player filter. */
+:root{--bg:#0a0e1a;--panel:#121829;--line:#263050;--text:#eef1f8;--muted:#97a0b8;--accent:#a855f7;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 Inter,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
+h1{font:800 italic 34px/1 "Barlow Condensed",Impact,sans-serif;text-transform:uppercase;margin:0 0 14px}
+h1 span{color:var(--accent)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filters input,.filters select{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 10px;color:inherit;font:inherit;min-width:0;flex:1 1 160px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.card{perspective:800px;background:none;border:0;padding:0;cursor:pointer;color:inherit;text-align:left;font:inherit}
+.face{position:relative;aspect-ratio:750/1050;border-radius:4.8%/3.43%;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  transform:rotateX(var(--rx,0)) rotateY(var(--ry,0));box-shadow:0 18px 30px -16px rgba(0,0,0,.9);background:#000}
+.face img{display:block;width:100%;height:100%;object-fit:cover}
+.face::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--gx,30%) var(--gy,20%),rgba(255,255,255,.45),transparent 50%),
+  repeating-linear-gradient(115deg,rgba(255,0,128,.12) 0 6%,rgba(255,191,0,.12) 6% 12%,rgba(60,255,143,.12) 12% 18%,rgba(0,200,255,.12) 18% 24%,rgba(166,77,255,.12) 24% 30%);
+  background-size:100% 100%,300% 300%;background-position:0 0,var(--gx,50%) var(--gy,50%);mix-blend-mode:overlay;opacity:.8;pointer-events:none}
+.meta{margin-top:8px;font-size:13px;color:var(--muted)} .meta b{color:var(--text);display:block;font-size:14px}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.box{position:fixed;inset:0;background:rgba(5,7,14,.88);display:none;place-items:center;padding:16px;z-index:10}
+.box.on{display:grid}
+.box .in{display:grid;gap:12px;justify-items:center;max-width:420px;width:100%}
+.box .face{width:100%}
+.btn{display:inline-flex;gap:6px;align-items:center;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none;cursor:pointer;font:inherit}
+.btn.ghost{background:var(--panel);border:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){.face{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">GMA Focus <span>Cards</span></h1>
+  <div class="filters" id="filters">
+    <input id="q" type="search" placeholder="Search players or schools" aria-label="Search">
+    <select id="sport" aria-label="Sport"><option value="">All sports</option></select>
+  </div>
+  <div class="grid" id="grid" aria-live="polite"></div>
+  <p class="empty" id="empty" hidden></p>
+</div>
+<div class="box" id="box" role="dialog" aria-modal="true" aria-label="Card">
+  <div class="in">
+    <div class="face" id="big"><img alt=""></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+      <a class="btn" id="view3d" target="_top">View in 3D foil</a>
+      <button class="btn ghost" id="close">Close</button>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+/* ---------- settings ---------- */
+const CFG = Object.assign({
+  apiUrl: "",                                           // the Google Sheet script's Web app URL (same as the Card Studio's SUBMIT_URL)
+  studioUrl: "card-studio.html",       // where the Card Studio lives, for "View in 3D foil" (use a full https:// address if this gallery is pasted into another site)
+  player: "", school: "", sport: ""                     // lock the gallery, e.g. player: "David Unrein" on his profile
+}, window.GMA_CONFIG || {});
+// URL parameters also work: cards-gallery.html?player=David%20Unrein
+const P = (()=>{ let q=location.search; try{ if(!q && window.top!==window) q=window.top.location.search; }catch(e){} return new URLSearchParams(q); })();   // works inside an embed frame too
+for (const k of ["player","school","sport"]) if (P.get(k)) CFG[k] = P.get(k);
+
+const $ = s => document.querySelector(s), grid = $("#grid"), empty = $("#empty");
+let cards = [];
+if (CFG.player) { $("#title").innerHTML = `${esc(CFG.player)} <span>Cards</span>`; $("#filters").hidden = true; }
+function esc(t){ return String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function tilt(el, e){ const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+  el.style.setProperty("--ry", ((x - .5) * 22) + "deg"); el.style.setProperty("--rx", ((.5 - y) * 18) + "deg");
+  el.style.setProperty("--gx", x * 100 + "%"); el.style.setProperty("--gy", y * 100 + "%"); }
+function untilt(el){ ["--rx","--ry"].forEach(v => el.style.setProperty(v, "0deg")); }
+function show(){
+  const q = $("#q").value.trim().toLowerCase(), sp = $("#sport").value;
+  const list = cards.filter(c => (!q || (c.player + " " + c.school).toLowerCase().includes(q)) && (!sp || c.sport === sp));
+  grid.innerHTML = "";
+  for (const c of list) {
+    const b = document.createElement("button"); b.className = "card"; b.type = "button";
+    b.innerHTML = `<div class="face"><img loading="lazy" alt="${esc(c.player)} card" src="${esc(c.image)}"></div><div class="meta"><b>${esc(c.player)}</b>${esc([c.sport, c.school].filter(Boolean).join(" · "))}</div>`;
+    const f = b.querySelector(".face");
+    b.addEventListener("pointermove", e => tilt(f, e)); b.addEventListener("pointerleave", () => untilt(f));
+    b.addEventListener("click", () => open(c));
+    grid.append(b);
+  }
+  empty.hidden = list.length > 0;
+  empty.textContent = cards.length ? "No cards match." : (CFG.player ? "No approved cards yet." : "No cards yet. Make one in the Card Studio!");
+}
+function open(c){
+  const big = $("#big"); big.querySelector("img").src = c.image; big.querySelector("img").alt = c.player + " card";
+  const v = $("#view3d"); v.hidden = !CFG.studioUrl; v.href = `${CFG.studioUrl}?view=${encodeURIComponent(c.id)}`;
+  $("#box").classList.add("on"); $("#close").focus();
+}
+$("#box").addEventListener("pointermove", e => tilt($("#big"), e));
+$("#close").addEventListener("click", () => $("#box").classList.remove("on"));
+$("#box").addEventListener("click", e => { if (e.target.id === "box") $("#box").classList.remove("on"); });
+addEventListener("keydown", e => { if (e.key === "Escape") $("#box").classList.remove("on"); });
+$("#q").addEventListener("input", show); $("#sport").addEventListener("change", show);
+
+if (!CFG.apiUrl) { empty.hidden = false; empty.textContent = "Gallery not connected yet: add the Web app URL as apiUrl."; return; }
+const qs = new URLSearchParams(); for (const k of ["player","school","sport"]) if (CFG[k]) qs.set(k, CFG[k]);
+empty.hidden = false; empty.textContent = "Loading cards…";
+fetch(CFG.apiUrl + (qs.toString() ? "?" + qs : ""))
+  .then(r => r.json()).then(j => { if (!j.ok) throw new Error(j.error);
+    cards = j.cards || [];
+    [...new Set(cards.map(c => c.sport).filter(Boolean))].sort().forEach(s => { const o = document.createElement("option"); o.textContent = s; $("#sport").append(o); });
+    show(); })
+  .catch(() => { empty.hidden = false; empty.textContent = "Cards couldn't load right now."; });
+})();
+</script>
+</body>
+</html>

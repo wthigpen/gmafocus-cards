@@ -1,0 +1,4 @@
+name,school,sport,position,number,class,title,stat1_label,stat1_value,stat2_label,stat2_value,stat3_label,stat3_value,off,def,ability1,ability2,quote
+Sample Player,Davenport High,Basketball,Point Guard,11,2027,The Engine,PPG,18.4,REB,6.1,AST,7.2,5,3,Floor General,Ice in the Veins,Every possession is a promise.
+Sample Catcher,Smithson Valley,Baseball,Catcher,10,2026,The Wall,AVG,.342,HR,6,RBI,31,4,5,Cannon Arm,Dugout Leader,Nothing gets by.
+Sample Pitcher,Cibolo Steele,Softball,Pitcher,7,2028,,ERA,1.45,K,112,W,14,3,5,Ace,"Locked In: Strikes out the side whenever the bases are loaded.",
