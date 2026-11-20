@@ -1184,6 +1184,19 @@ async function start() {
   const THREE = await import("three");
   const { Holo, MATERIAL_PARAMS, SCENE_PARAMS } = await import("holospot");
   const canvas = document.createElement("canvas"); canvas.id = "gl"; stage.appendChild(canvas);
+  canvas.addEventListener("webglcontextlost", () => fail(new Error("the browser reset its graphics")));
+  // Safety net: the flat card stays on screen until the 3D view has really drawn a card, and comes back if it goes blank.
+  const probe = document.createElement("canvas"); probe.width = probe.height = 16;
+  const px2 = probe.getContext("2d", { willReadFrequently: true });
+  let shown = false, blank = 0, tick = 0;
+  function drewCard() {
+    try {
+      px2.clearRect(0, 0, 16, 16);
+      px2.drawImage(canvas, canvas.width * .35, canvas.height * .3, canvas.width * .3, canvas.height * .4, 0, 0, 16, 16);
+      const d = px2.getImageData(0, 0, 16, 16).data; let a = 0; for (let i = 3; i < d.length; i += 4) a = Math.max(a, d[i]);
+      return a > 20;
+    } catch (e) { return false; }
+  }
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setClearColor(0x000000, 0);
   const scene = new THREE.Scene();
@@ -1308,7 +1321,11 @@ async function start() {
     holo.render(scene, camera);
     renderer.autoClear = false; renderer.setRenderTarget(null); renderer.clearDepth();
     renderer.render(printScene, camera); renderer.autoClear = true;
-    if (holo.errors.length) fail(new Error(holo.errors[0]));
+    if (holo.errors.length) return fail(new Error(holo.errors[0]));
+    if (!shown || ++tick % 120 === 0) {
+      if (drewCard()) { blank = 0; if (!shown) { shown = true; stage.classList.add("gl"); status.textContent = ""; } }
+      else if (++blank > (shown ? 2 : 150)) fail(new Error("the 3D view stayed blank"));
+    }
   }
   shotBtn.addEventListener("click", () => {
     // draw a fresh frame right now (the loop pauses when the card is scrolled off screen), then read it back
@@ -1326,19 +1343,21 @@ async function start() {
 
   await setFoil();
   return {
-    on() { size(); stage.classList.add("gl"); running = true; renderer.setAnimationLoop(frame); shotBtn.hidden = false; pro.hidden = false; },
-    off() { running = false; renderer.setAnimationLoop(null); stage.classList.remove("gl"); shotBtn.hidden = true; pro.hidden = true; }
+    on() { size(); shown = false; blank = 0; running = true; renderer.setAnimationLoop(frame); shotBtn.hidden = false; pro.hidden = false; },
+    off() { running = false; shown = false; renderer.setAnimationLoop(null); stage.classList.remove("gl"); shotBtn.hidden = true; pro.hidden = true; }
   };
 }
 function fail(e) {
   console.warn("3D foil unavailable:", e);
   if (gl3) gl3.off();
-  gl3 = null; wrap.hidden = true; status.textContent = "";
+  const c = document.getElementById("gl"); if (c) c.remove();
+  gl3 = null; box.checked = false;
+  status.textContent = `Real foil couldn't run in this browser (${e && e.message || "unknown reason"}), so the standard foil is shown.`;
 }
 async function enable() {
   try {
     if (!gl3) { status.textContent = "Loading real foil…"; gl3 = await start(); }
-    gl3.on(); status.textContent = "";
+    gl3.on();   // the status clears once a 3D frame is confirmed
   } catch (e) { fail(e); }
 }
 if (document.createElement("canvas").getContext("webgl2")) {
