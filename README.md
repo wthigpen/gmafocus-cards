@@ -6,6 +6,7 @@
 | File | What it is |
 |---|---|
 | `card-studio.html` | The Card Studio: build, submit, download and print cards. Also the 3D card viewer (`?view=ID`). |
+| `games.html` | **Game Photos page:** every ShootProof game gallery, newest first, with the Buy 4 get 1 free offer and packages. Setup: `SETUP-GAMES.md`. |
 | `cards-gallery.html` | Approved-card gallery for a Cards page or a player profile (`player: "Name"`). |
 | `google-sheet/Code.gs` | Free backend in your Google Sheet: submissions, approval and gallery data. |
 | `roster-template.csv` | Columns for the roster that auto-fills stats. |
