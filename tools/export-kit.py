@@ -54,7 +54,10 @@ To import a tab: in the Sheet, add the tab, then File > Import > Upload the .csv
 "Replace current sheet".
 
 To connect a tab to the website: File > Share > Publish to web > pick the tab >
-Comma-separated values (.csv) > Publish > copy the link. Paste that link into the
+Comma-separated values (.csv) > Publish > copy the link.
+
+gallery_url in the Games tab can be any ShootProof link, for example
+https://photos.gmafocus.com/gallery/DHS2027 (or that gallery's /store page). Paste that link into the
 matching setting in the Airo code:
   Games tab    -> "gamesCsvUrl"    in 1 - Game Photos
   Profiles tab -> "profilesCsvUrl" in 2 - Recruit list AND 3 - Ricky Groff profile
@@ -76,7 +79,7 @@ for f in ["SETUP-GAMES.md", "SETUP-PROFILES.md", "SETUP-SUBMISSIONS.md", "AIRO-I
 
 # 5 · Update queue
 Q = [
- ("1", "Now", "ShootProof", "Confirm Buy 4 Get 1 Free is set up as a real checkout discount", "ShootProof > Coupons/Promotions", "", "To do"),
+ ("1", "Now", "ShootProof", "Confirm Buy 4 Get 1 Free works at checkout (it is a Cart Bundle; also 5 Digital Photos package $39.99)", "ShootProof > Cart Bundles", "", "Done"),
  ("2", "Now", "Google Sheet", "Add Games and Profiles tabs, publish both as CSV", "2-Google-Sheet", "README - which file goes where.txt", "To do"),
  ("3", "Now", "Airo", "Create /games page and paste Game Photos code; add Game Photos to menu", "1-Airo-Copy-Paste", "1 - Game Photos", "To do"),
  ("4", "Now", "Airo", "Create /recruit page and paste Recruit list code; add Recruit to menu", "1-Airo-Copy-Paste", "2 - Recruit list", "To do"),

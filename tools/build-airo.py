@@ -28,7 +28,7 @@ SNIPPETS = [
     ("game-photos.html", "games.html", "gma-games", "Game Photos page → paste on gmafocus.com/games", {
         "gamesCsvUrl": "", "gamesData": "",
         "links": {"gameDay": "https://photos.gmafocus.com/booking/davenport", "season": SITE + "/services", "scout": SITE + "/contact"},
-        "scoutPrice": "", "linkTarget": "_top"}),
+        "dealText": "", "scoutPrice": "", "linkTarget": "_top"}),
     ("recruit.html", "athlete.html", "gma-scout", "College Scout athlete list → paste on gmafocus.com/recruit", dict(SCOUT_COMMON)),
     ("recruit-ricky-groff.html", "athlete.html", "gma-scout", "Ricky Groff's College Scout profile → paste on gmafocus.com/recruit/ricky-groff",
         dict(SCOUT_COMMON, athlete="Ricky Groff")),

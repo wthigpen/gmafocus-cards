@@ -73,6 +73,7 @@
     "season": "https://gmafocus.com/services",
     "scout": "https://gmafocus.com/contact"
   },
+  "dealText": "",
   "scoutPrice": "",
   "linkTarget": "_top"
 };</script>
@@ -81,7 +82,7 @@
   <section class="deal" aria-label="Current offer">
     <div>
       <h1 class="big">Buy 4 photos,<br><b>get 1 free</b></h1>
-      <p id="dealText">Every game gallery. Find your athlete, add 5 photos to your cart, and the 5th one is on us.</p>
+      <p id="dealText">Every game gallery. Find your athlete, add 5 photos to your cart, and the 5th one comes off automatically. Or grab the <b>5 Digital Photos package for $39.99</b> in the gallery's Store.</p>
     </div>
     <div class="tag">5 for<br>the price<br>of 4</div>
   </section>
@@ -89,7 +90,7 @@
   <ol class="steps">
     <li><b>Pick the game</b> below</li>
     <li><b>Find your athlete</b> and add 5 favorites</li>
-    <li><b>Check out</b> and pay for only 4</li>
+    <li><b>Check out:</b> the free photo comes off in your cart</li>
   </ol>
 
   <h2 class="display" style="font-size:32px;margin-bottom:12px">Game <span>Photos</span></h2>
@@ -138,6 +139,7 @@ const CFG = Object.assign({
     season:  "https://gmafocus.com/services",
     scout:   "https://gmafocus.com/contact"
   },
+  dealText: "",           // replace the banner sentence, e.g. when the package price changes. Blank keeps the default.
   scoutPrice: "",          // e.g. "From $___" once you set it; leave "" to show "Elite"
   newDays: 7,              // "New" badge for galleries this many days old or less
   lastChanceDays: 2,       // "Last chance" badge when the deal ends within this many days
@@ -174,6 +176,7 @@ function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("on
 /* ---------- packages ---------- */
 ROOT.querySelectorAll("[data-link]").forEach(a => { const u = safeUrl(CFG.links[a.dataset.link]); if (u) { a.href = u; a.target = CFG.linkTarget; } else a.hidden = true; });
 if (CFG.scoutPrice) $("#scoutPrice").textContent = CFG.scoutPrice;
+if (CFG.dealText) $("#dealText").textContent = CFG.dealText;
 
 /* ---------- games ---------- */
 let games = [];
