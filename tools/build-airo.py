@@ -16,7 +16,7 @@ HOSTED = "https://cards.gmafocus.com"
 
 PROFILE_HEAD = "name,grad_year,sport,position,school,number,height,weight,gpa,photo_url,highlight_url,hudl_url,stats,measurables,achievements,bio,parent_name,parent_email,coach_name,coach_email,x_handle,instagram,photos,status"
 # Only facts confirmed so far. Fill the blanks (see SETUP-PROFILES.md for the format) or move this row to the Profiles tab.
-RICKY = "Ricky Groff,,Basketball,,Davenport High,,,,," + SITE + "/airo-assets/images/athletes/ricky-groff-spotlight,,,,,,,,,,,,,,live"
+RICKY = "Ricky Groff,2027,Basketball,,Davenport High,,,,," + SITE + "/airo-assets/images/athletes/ricky-groff-spotlight,,,,,,,,,,,,,,live"
 PROFILES = PROFILE_HEAD + "\n" + RICKY
 
 SCOUT_COMMON = {

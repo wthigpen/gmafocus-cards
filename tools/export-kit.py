@@ -38,7 +38,7 @@ put(G + "Apps Script - paste into Extensions, Apps Script.txt", (ROOT / "google-
 put(G + "Games tab.csv", src="games-template.csv")
 prof = (ROOT / "profiles-template.csv").read_text().splitlines()
 put(G + "Profiles tab.csv", "\n".join([prof[0],
-    'Ricky Groff,,Basketball,,Davenport High,,,,,https://gmafocus.com/airo-assets/images/athletes/ricky-groff-spotlight,,,,,,,,,,,,,,live',
+    'Ricky Groff,2027,Basketball,,Davenport High,,,,,https://gmafocus.com/airo-assets/images/athletes/ricky-groff-spotlight,,,,,,,,,,,,,,live',
     prof[1].replace(",live", ",draft")]) + "\n")
 put(G + "Roster tab.csv", src="roster-template.csv")
 put(G + "README - which file goes where.txt", """GOOGLE SHEET "GMA Focus Cards": ONE SHEET RUNS EVERYTHING
@@ -85,7 +85,7 @@ Q = [
  ("4", "Now", "Airo", "Create /recruit page and paste Recruit list code; add Recruit to menu", "1-Airo-Copy-Paste", "2 - Recruit list", "To do"),
  ("5", "Now", "Airo", "Create /recruit/ricky-groff page and paste Ricky's profile code", "1-Airo-Copy-Paste", "3 - Ricky Groff profile", "To do"),
  ("6", "Now", "Airo", "Paste the Games and Profiles CSV links into gamesCsvUrl / profilesCsvUrl, re-paste", "1-Airo-Copy-Paste", "", "To do"),
- ("7", "This week", "Ricky Groff", "Fill in grad year, position, #, height, weight, GPA", "Google Sheet > Profiles", "", "To do"),
+ ("7", "This week", "Ricky Groff", "Fill in position, #, height, weight, GPA", "Google Sheet > Profiles", "", "To do"),
  ("8", "This week", "Ricky Groff", "Add highlight reel link (YouTube/Vimeo) and last season's stats", "Google Sheet > Profiles", "", "To do"),
  ("9", "This week", "Ricky Groff", "Add honors, scouting note, commitment; parent + coach email with family's OK", "Google Sheet > Profiles", "", "To do"),
  ("10", "This week", "Airo site fixes", "Link the dead Reserve My Spot and Sign Up for Season Coverage buttons", "Airo homepage", "", "To do"),

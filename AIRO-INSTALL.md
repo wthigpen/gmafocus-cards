@@ -36,7 +36,7 @@ Each file starts with `window.GMA_CONFIG = { … }`. That's the only part you ev
 ## Ricky Groff's profile: what to fill in
 His page currently has only what's confirmed: name, Basketball, Davenport High, and his spotlight photo from your homepage. Add the rest to his row in the **Profiles** tab, or to `profilesData` in both recruit files:
 
-- graduation year, position and jersey number
+- position and jersey number (class of 2027 is already in)
 - height, weight and GPA
 - **highlight reel link** (YouTube or Vimeo): this matters most to coaches
 - last season's stats, for example `PPG:…|REB:…|AST:…`
