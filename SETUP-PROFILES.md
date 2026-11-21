@@ -43,6 +43,7 @@ Until a link is set, the page shows two sample athletes and a notice that says s
 | `parent_name`, `parent_email`, `coach_name`, `coach_email` | Contacts. See privacy below. |
 | `x_handle`, `instagram` | Optional, without the @ |
 | `photos` | Optional game photo links separated by `|` (your best 4–8) |
+| `committed` | The college the athlete committed to, for example `UT Dallas`. Shows a green **Committed** badge on the profile and on their tile in the list. |
 | `status` | `live` to show the athlete. `draft` or `hidden` keeps them off the page while you build the profile. |
 
 ## 2. Privacy (these are minors)

@@ -34,7 +34,7 @@ Each file starts with `window.GMA_CONFIG = { … }`. That's the only part you ev
 **Recommended:** connect the Google Sheet tabs (`SETUP-GAMES.md`, `SETUP-PROFILES.md`) and set the `…CsvUrl` once on each page. After that you never touch Airo again: add a game or update a stat in the Sheet, and every page updates by itself.
 
 ## Ricky Groff's profile: what to fill in
-His page currently has only what's confirmed: name, Basketball, Davenport High, and his spotlight photo from your homepage. Add the rest to his row in the **Profiles** tab, or to `profilesData` in both recruit files:
+His page has what's confirmed so far: name, class of 2027, Basketball, Davenport High, **committed to UT Dallas**, and his spotlight photo from your homepage. Add the rest to his row in the **Profiles** tab, or to `profilesData` in both recruit files:
 
 - position and jersey number (class of 2027 is already in)
 - height, weight and GPA
@@ -42,7 +42,6 @@ His page currently has only what's confirmed: name, Basketball, Davenport High, 
 - last season's stats, for example `PPG:…|REB:…|AST:…`
 - honors and a one-line scouting note
 - parent and coach emails, **with the family's OK**
-- where he signed or committed, if he did. A commitment is the best proof that College Scout works, so put it in `achievements` and on the homepage.
 
 ## A second athlete page
 Copy `airo/recruit-ricky-groff.html`, change `"athlete": "Ricky Groff"` to the new name, and paste it on `/recruit/first-last`. The name must match the `name` in the Profiles data.

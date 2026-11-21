@@ -20,6 +20,9 @@ a{color:inherit}
 .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
 .cond{font-family:"Barlow Condensed",Impact,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase}
 .note{background:#1f1630;border:1px dashed var(--accent);border-radius:12px;padding:10px 14px;color:#ddd6fe;font-size:14px;margin:0 0 16px}
+.commit{display:inline-flex;align-items:center;gap:8px;margin:6px 0 4px;background:#052e1a;border:1px solid #22c55e;color:#bbf7d0;border-radius:999px;padding:6px 12px;font:700 12px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.commit b{color:#fff}
+.tile .commit{margin:6px 0 0}
 .badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#b45309,var(--gold));color:#1a1300;border-radius:999px;padding:6px 12px;font:700 12px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
 /* hero */
 .hero{display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:end;margin-bottom:22px}
@@ -27,6 +30,7 @@ a{color:inherit}
 .photo img{width:100%;height:100%;object-fit:cover}
 .photo .ini{font-size:88px;color:#c4b5fd}
 .hero h1{font-size:clamp(44px,8vw,76px);line-height:.88;margin:10px 0 8px}
+.hero .badge{margin:0 8px 0 0}
 .hero h1 span{color:var(--accent)}
 .line{color:var(--muted);font-size:16px;margin:0 0 14px}
 .line b{color:var(--text)}
@@ -112,7 +116,7 @@ const CFG = Object.assign({
   setTitle: false       // true: change the browser tab title to the athlete's name
 }, window.GMA_CONFIG || {});
 
-const SAMPLE = `name,grad_year,sport,position,school,number,height,weight,gpa,photo_url,highlight_url,hudl_url,stats,measurables,achievements,bio,parent_name,parent_email,coach_name,coach_email,x_handle,instagram,photos,status
+const SAMPLE = `name,grad_year,sport,position,school,number,height,weight,gpa,photo_url,highlight_url,hudl_url,stats,measurables,achievements,bio,parent_name,parent_email,coach_name,coach_email,x_handle,instagram,photos,status,committed
 Sample Athlete,2027,Basketball,Point Guard,Davenport High,11,"6'1""",175,3.8,,,,PPG:18.4|REB:6.1|AST:7.2|STL:2.3|FG%:48|3P%:39,"Wingspan:6'4""|Vertical:32 in|Lane agility:10.9s",All-District 1st Team (2026)|Team captain|Academic All-State,"Floor general who pushes the pace, runs the offense and guards the other team's best ball handler.",Parent Name,parent@example.com,Coach Name,coach@example.com,,,,live
 Sample Catcher,2026,Baseball,Catcher,Davenport High,10,"5'11""",190,3.5,,,,AVG:.342|HR:6|RBI:31|OBP:.441,Pop time:1.95s|Exit velo:92 mph,2nd Team All-District,Strong arm and steady behind the plate.,Parent Name,parent@example.com,Coach Name,coach@example.com,,,,live`;
 
@@ -167,7 +171,7 @@ function profile(a){
   <div class="hero">
     <div class="photo">${photo ? `<img alt="${esc(a.name)}" src="${esc(photo)}">` : `<span class="cond ini">${esc(initials(a.name))}</span>`}</div>
     <div>
-      <span class="badge">★ ${esc(CFG.brand)} College Scout</span>
+      <span class="badge">★ ${esc(CFG.brand)} College Scout</span>${a.committed ? `<span class="commit">✓ Committed: <b>${esc(a.committed)}</b></span>` : ""}
       <h1 class="cond">${esc(a.name)}${a.grad_year ? ` <span>'${esc(String(a.grad_year).slice(-2))}</span>` : ""}</h1>
       <p class="line"><b>${esc([a.position, a.sport].filter(Boolean).join(" · "))}</b>${a.school ? ` · ${esc(a.school)}` : ""}</p>
       <div class="facts">${facts.map(([k, v]) => `<div class="fact"><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join("")}</div>
@@ -233,7 +237,7 @@ function directory(all){
     $("#dir").innerHTML = l.map(a => { const ph = safeUrl(a.photo_url); return `
       <a class="tile" href="${esc(profileLink(a))}" target="${esc(CFG.linkTarget)}">
         <div class="photo">${ph ? `<img loading="lazy" alt="" src="${esc(ph)}">` : `<span class="cond ini">${esc(initials(a.name))}</span>`}</div>
-        <div class="t"><h3 class="cond">${esc(a.name)}</h3><p>${esc([a.grad_year && "Class of " + a.grad_year, a.position, a.sport].filter(Boolean).join(" · "))}</p></div>
+        <div class="t"><h3 class="cond">${esc(a.name)}</h3><p>${esc([a.grad_year && "Class of " + a.grad_year, a.position, a.sport].filter(Boolean).join(" · "))}</p>${a.committed ? `<span class="commit">✓ ${esc(a.committed)}</span>` : ""}</div>
       </a>`; }).join("");
     $("#none").hidden = l.length > 0;
   };

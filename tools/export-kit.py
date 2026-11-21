@@ -38,8 +38,8 @@ put(G + "Apps Script - paste into Extensions, Apps Script.txt", (ROOT / "google-
 put(G + "Games tab.csv", src="games-template.csv")
 prof = (ROOT / "profiles-template.csv").read_text().splitlines()
 put(G + "Profiles tab.csv", "\n".join([prof[0],
-    'Ricky Groff,2027,Basketball,,Davenport High,,,,,https://gmafocus.com/airo-assets/images/athletes/ricky-groff-spotlight,,,,,,,,,,,,,,live',
-    prof[1].replace(",live", ",draft")]) + "\n")
+    'Ricky Groff,2027,Basketball,,Davenport High,,,,,https://gmafocus.com/airo-assets/images/athletes/ricky-groff-spotlight,,,,,Committed to UT Dallas,,,,,,,,,live,UT Dallas',
+    prof[1].replace(",live,", ",draft,")]) + "\n")
 put(G + "Roster tab.csv", src="roster-template.csv")
 put(G + "README - which file goes where.txt", """GOOGLE SHEET "GMA Focus Cards": ONE SHEET RUNS EVERYTHING
 
@@ -87,11 +87,11 @@ Q = [
  ("6", "Now", "Airo", "Paste the Games and Profiles CSV links into gamesCsvUrl / profilesCsvUrl, re-paste", "1-Airo-Copy-Paste", "", "To do"),
  ("7", "This week", "Ricky Groff", "Fill in position, #, height, weight, GPA", "Google Sheet > Profiles", "", "To do"),
  ("8", "This week", "Ricky Groff", "Add highlight reel link (YouTube/Vimeo) and last season's stats", "Google Sheet > Profiles", "", "To do"),
- ("9", "This week", "Ricky Groff", "Add honors, scouting note, commitment; parent + coach email with family's OK", "Google Sheet > Profiles", "", "To do"),
+ ("9", "This week", "Ricky Groff", "Add honors and scouting note; parent + coach email with family's OK (UT Dallas commitment is in)", "Google Sheet > Profiles", "", "To do"),
  ("10", "This week", "Airo site fixes", "Link the dead Reserve My Spot and Sign Up for Season Coverage buttons", "Airo homepage", "", "To do"),
  ("11", "This week", "Airo site fixes", "Pick one booking system; point every Book button at it", "Airo", "", "To do"),
  ("12", "This week", "Airo site fixes", "Add Contact to menu; add College Scout starting price; remove 'v1.0 Platform'", "Airo homepage", "", "To do"),
- ("13", "This week", "Airo", "Homepage College Scout section: add 'See College Scout profiles' button to /recruit", "Airo homepage", "", "To do"),
+ ("13", "This week", "Airo", "Homepage College Scout section: add 'Ricky Groff \u2192 committed to UT Dallas' proof + 'See College Scout profiles' button to /recruit", "Airo homepage", "", "To do"),
  ("14", "This week", "Freefield", "On the MSI: Claude Code session in GMA Focus folder; make Freefield output ShootProof / social / per-athlete folders", "MSI", "", "To do"),
  ("15", "After every game", "Routine", "Upload gallery to ShootProof (Davenport vs Opponent · Date)", "ShootProof", "", "Repeat"),
  ("16", "After every game", "Routine", "Add one row to Games tab with gallery link", "Google Sheet > Games", "", "Repeat"),
