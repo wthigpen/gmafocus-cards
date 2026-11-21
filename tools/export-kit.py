@@ -54,13 +54,14 @@ To import a tab: in the Sheet, add the tab, then File > Import > Upload the .csv
 "Replace current sheet".
 
 To connect a tab to the website: File > Share > Publish to web > pick the tab >
-Comma-separated values (.csv) > Publish > copy the link.
-
-gallery_url in the Games tab can be any ShootProof link, for example
-https://photos.gmafocus.com/gallery/DHS2027 (or that gallery's /store page). Paste that link into the
+Comma-separated values (.csv) > Publish > copy the link. Paste that link into the
 matching setting in the Airo code:
   Games tab    -> "gamesCsvUrl"    in 1 - Game Photos
   Profiles tab -> "profilesCsvUrl" in 2 - Recruit list AND 3 - Ricky Groff profile
+
+GAMES TAB: gallery_url = the link to that GAME'S ALBUM in ShootProof
+(Davenport > season > sport > game). Open the album and copy the address bar.
+The season is worked out from the date, so you don't need to type it.
 
 The Profiles tab includes a "Sample Athlete" row set to draft (hidden). Delete it whenever you like.
 Ricky Groff's row only has confirmed facts. Fill in the blanks (see the Update Queue).
@@ -93,8 +94,8 @@ Q = [
  ("12", "This week", "Airo site fixes", "Add Contact to menu; add College Scout starting price; remove 'v1.0 Platform'", "Airo homepage", "", "To do"),
  ("13", "This week", "Airo", "Homepage College Scout section: add 'Ricky Groff \u2192 committed to UT Dallas' proof + 'See College Scout profiles' button to /recruit", "Airo homepage", "", "To do"),
  ("14", "This week", "Freefield", "On the MSI: Claude Code session in GMA Focus folder; make Freefield output ShootProof / social / per-athlete folders", "MSI", "", "To do"),
- ("15", "After every game", "Routine", "Upload gallery to ShootProof (Davenport vs Opponent · Date)", "ShootProof", "", "Repeat"),
- ("16", "After every game", "Routine", "Add one row to Games tab with gallery link", "Google Sheet > Games", "", "Repeat"),
+ ("15", "After every game", "Routine", "Upload to ShootProof album: Davenport > season > sport > vs Opponent · Date", "ShootProof", "", "Repeat"),
+ ("16", "After every game", "Routine", "Add one row to Games tab with that album's link", "Google Sheet > Games", "", "Repeat"),
  ("17", "After every game", "Routine", "Post 3-5 teasers within 24h with gmafocus.com/games link; tag players + school", "Instagram / Facebook / X", "", "Repeat"),
  ("18", "After every game", "Routine", "2 days before deal ends: post Last Chance reminder", "Social", "", "Repeat"),
  ("19", "Weekly", "Routine", "Update College Scout stats + photos; pitch Season Coverage to families who bought 2+ games", "Google Sheet > Profiles", "", "Repeat"),

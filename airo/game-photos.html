@@ -51,6 +51,7 @@
 #gma-games .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
 #gma-games .btn.sm{padding:8px 10px;font-size:13px}
 #gma-games .empty{color:var(--muted);padding:30px 0;text-align:center}
+#gma-games .allrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;color:var(--muted);margin:18px 0 0}
 #gma-games .note{background:#1f1630;border:1px dashed var(--accent);border-radius:12px;padding:10px 14px;color:#ddd6fe;font-size:14px;margin:0 0 16px}
 #gma-games .up{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
 #gma-games .up .pk{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:8px;align-content:start}
@@ -68,6 +69,7 @@
 <script>window.GMA_CONFIG = {
   "gamesCsvUrl": "",
   "gamesData": "",
+  "allPhotosUrl": "",
   "links": {
     "gameDay": "https://photos.gmafocus.com/booking/davenport",
     "season": "https://gmafocus.com/services",
@@ -99,8 +101,10 @@
     <input id="q" type="search" placeholder="Search school or opponent" aria-label="Search">
     <select id="sport" aria-label="Sport"><option value="">All sports</option></select>
     <select id="school" aria-label="School"><option value="">All schools</option></select>
+    <select id="season" aria-label="Season"><option value="">All seasons</option></select>
   </div>
   <div class="grid" id="grid" aria-live="polite"></div>
+  <p class="allrow" id="allrow" hidden>Looking for an older game? <a class="btn ghost sm" id="allLink" rel="noopener" target="_blank">Browse all Davenport photos on ShootProof</a></p>
   <p class="empty" id="empty" hidden></p>
 
   <section class="up" aria-label="Packages">
@@ -134,6 +138,7 @@ const CFG = Object.assign({
   gamesCsvUrl: "",
   gamesData: "",        // or paste the CSV rows right here (header row first). Used when gamesCsvUrl is blank.
   // Where each package button goes. Use full https:// addresses if this page is pasted into another site.
+  allPhotosUrl: "",       // your top-level ShootProof gallery (all seasons, sports, games). Blank hides the button.
   links: {
     gameDay: "https://photos.gmafocus.com/booking/davenport",
     season:  "https://gmafocus.com/services",
@@ -151,7 +156,8 @@ const SAMPLE = `date,sport,school,opponent,home_away,level,gallery_url,cover_url
 ${iso(-1)},Basketball,Davenport High,Smithson Valley,Home,Varsity,#,,#,,Sample game
 ${iso(-3)},Basketball,Davenport High,Cibolo Steele,Away,JV,#,,,,Sample game
 ${iso(-6)},Football,Davenport High,Steele,Home,Varsity,#,,#,${iso(1)},Sample game
-${iso(-20)},Volleyball,Davenport High,Clemens,Home,Varsity,#,,,,Sample game`;
+${iso(-20)},Volleyball,Davenport High,Clemens,Home,Varsity,#,,,,Sample game
+${iso(-300)},Basketball,Davenport High,Smithson Valley,Away,Varsity,#,,,,Sample game (last season)`;
 
 /* ---------- helpers ---------- */
 const ROOT = document.getElementById("gma-games") || document, $ = s => ROOT.querySelector(s);
@@ -177,6 +183,7 @@ function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("on
 ROOT.querySelectorAll("[data-link]").forEach(a => { const u = safeUrl(CFG.links[a.dataset.link]); if (u) { a.href = u; a.target = CFG.linkTarget; } else a.hidden = true; });
 if (CFG.scoutPrice) $("#scoutPrice").textContent = CFG.scoutPrice;
 if (CFG.dealText) $("#dealText").textContent = CFG.dealText;
+if (safeUrl(CFG.allPhotosUrl)) { $("#allLink").href = safeUrl(CFG.allPhotosUrl); $("#allrow").hidden = false; }
 
 /* ---------- games ---------- */
 let games = [];
@@ -184,19 +191,27 @@ function load(rows){
   games = rows.map(r => {
     const d = day(r.date), ends = day(r.deal_ends) || (d && new Date(d.getTime() + CFG.defaultDealDays * 864e5));
     return { ...r, d, ends, gallery: safeUrl(r.gallery_url), cover: safeUrl(r.cover_url), video: safeUrl(r.highlight_url),
+      season: r.season || seasonOf(d),
       key: [r.date, r.school, r.opponent].join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "-") };
   }).filter(g => g.d && g.gallery).sort((a, b) => b.d - a.d);
   fill("#sport", games.map(g => g.sport)); fill("#school", games.map(g => g.school));
+  const seasons = [...new Set(games.map(g => g.season).filter(Boolean))].sort().reverse();
+  for (const v of seasons) { const o = document.createElement("option"); o.value = v; o.textContent = v + " season"; $("#season").append(o); }
+  $("#season").hidden = seasons.length < 2; if (seasons.length) $("#season").value = seasons[0];
   const P = (() => { let q = location.search; try { if (!q && window.top !== window) q = window.top.location.search; } catch (_) {} return new URLSearchParams(q); })();
   if (P.get("sport")) $("#sport").value = P.get("sport");
   if (P.get("school")) $("#school").value = P.get("school");
+  if (P.get("season")) $("#season").value = P.get("season");
+  if (P.get("game")) $("#season").value = "";
   show();
   const want = P.get("game"); if (want) { const el = document.getElementById("g-" + want); if (el) el.scrollIntoView({ block: "center" }); }
 }
+// Sports seasons run Aug–Jul: a game on 2026-11-20 is in "2026-27".
+function seasonOf(d){ if (!d) return ""; const y = d.getMonth() >= 7 ? d.getFullYear() : d.getFullYear() - 1; return `${y}-${String((y + 1) % 100).padStart(2, "0")}`; }
 function fill(sel, vals){ for (const v of [...new Set(vals.filter(Boolean))].sort()) { const o = document.createElement("option"); o.textContent = v; $(sel).append(o); } }
 function show(){
-  const q = $("#q").value.trim().toLowerCase(), sp = $("#sport").value, sc = $("#school").value;
-  const list = games.filter(g => (!q || [g.school, g.opponent, g.sport, g.level, g.notes].join(" ").toLowerCase().includes(q)) && (!sp || g.sport === sp) && (!sc || g.school === sc));
+  const q = $("#q").value.trim().toLowerCase(), sp = $("#sport").value, sc = $("#school").value, se = $("#season").value;
+  const list = games.filter(g => (!q || [g.school, g.opponent, g.sport, g.level, g.notes].join(" ").toLowerCase().includes(q)) && (!sp || g.sport === sp) && (!sc || g.school === sc) && (!se || g.season === se));
   const grid = $("#grid"); grid.innerHTML = "";
   for (const g of list) {
     const age = -daysFrom(g.d), left = g.ends ? daysFrom(g.ends) : -1, dealOn = left >= 0;
@@ -235,7 +250,7 @@ $("#grid").addEventListener("click", async e => {
   try { if (navigator.share) { await navigator.share({ title, text: "Find your athlete. Buy 4 photos, get 1 free.", url }); return; } } catch (_) { return; }
   try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch (_) { prompt("Copy this link:", url); }
 });
-["#q", "#sport", "#school"].forEach(s => $(s).addEventListener("input", show));
+["#q", "#sport", "#school", "#season"].forEach(s => $(s).addEventListener("input", show));
 
 if (!CFG.gamesCsvUrl) { if (CFG.gamesData.trim()) load(parseCSV(CFG.gamesData.trim())); else { $("#sample").hidden = false; load(parseCSV(SAMPLE)); } return; }
 $("#empty").hidden = false; $("#empty").textContent = "Loading games…";

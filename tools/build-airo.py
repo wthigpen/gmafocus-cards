@@ -26,7 +26,7 @@ SCOUT_COMMON = {
 }
 SNIPPETS = [
     ("game-photos.html", "games.html", "gma-games", "Game Photos page → paste on gmafocus.com/games", {
-        "gamesCsvUrl": "", "gamesData": "",
+        "gamesCsvUrl": "", "gamesData": "", "allPhotosUrl": "",
         "links": {"gameDay": "https://photos.gmafocus.com/booking/davenport", "season": SITE + "/services", "scout": SITE + "/contact"},
         "dealText": "", "scoutPrice": "", "linkTarget": "_top"}),
     ("recruit.html", "athlete.html", "gma-scout", "College Scout athlete list → paste on gmafocus.com/recruit", dict(SCOUT_COMMON)),

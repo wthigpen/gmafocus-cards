@@ -26,20 +26,22 @@ Until a link is set, the page shows 4 sample games and a notice that says so.
 | `sport`, `school`, `opponent` | For example `Basketball`, `Davenport High`, `Smithson Valley` |
 | `home_away` | `Home` or `Away`. Away games show "at" instead of "vs". |
 | `level` | `Varsity`, `JV`, `Freshman`… (optional) |
-| `gallery_url` | **Required.** The ShootProof gallery link. Rows without one are hidden. |
+| `gallery_url` | **Required.** The link to **this game's album** in ShootProof (Davenport → season → sport → game). Open the album and copy the address bar. Rows without a link are hidden. |
 | `cover_url` | Optional photo for the tile. Leave blank to show the matchup in big letters. |
 | `highlight_url` | Optional YouTube or Hudl highlight link |
 | `deal_ends` | Optional. If blank, the deal runs 7 days after the game. |
+| `season` | Optional. Leave blank: it's worked out from the date (Aug–Jul, for example `2026-27`). The page opens on the newest season, and visitors can switch. |
 | `notes` | Optional. Searchable, for example "Senior Night". |
 
 ## 2. After every game (2 minutes)
-1. Upload the game to ShootProof as **one gallery per game**, named like `Davenport vs Smithson Valley · Nov 20`.
+1. Upload the game to ShootProof in its album: **Davenport → 2026-27 → Basketball → vs Smithson Valley · Nov 20**.
 2. Add one row to the **Games** tab with the gallery link. The page updates by itself within a few minutes.
 3. Post 3–5 teaser photos on social with the line: *"Find your athlete → [Game Photos link]. Buy 4, get 1 free this week."*
 4. Two days before `deal_ends`, post the **Last chance** reminder.
 
 ## 3. Settings at the top of the script
 - `links.gameDay`, `links.season`, `links.scout`: where the package buttons go. The defaults are your ShootProof booking page, /services and /contact. Point **Reserve the season** at a real checkout or booking form when you have one.
+- `allPhotosUrl`: your top-level Davenport gallery in ShootProof. It shows a **Browse all Davenport photos** button under the games.
 - `scoutPrice`: set it to something like `"From $___"` to show a starting price for College Scout.
 - `newDays`, `lastChanceDays`, `defaultDealDays`: badge and deal timing.
 
