@@ -31,7 +31,9 @@ Game night ─▶ Freefield sorts photos per athlete ─▶ upload to ShootProof
                                                               ▼
             Athlete home page: new photos on top ─▶ card generator ─▶ share ─▶ "Buy on ShootProof"
 ```
-**The key rule:** the site never copies whole games. It only keeps the ★ picks for each athlete. That's what drives your storage, Purge and Gallery sections today, and it's why those sections can go.
+**Rule 1: sports only.** ShootProof also holds non-sports clients (weddings, private sessions). Those must never show up in the Today queue, on athlete profiles or on Game Photos. Only events marked as sports events, or inside the Davenport gallery, count.
+
+**Rule 2:** the site never copies whole games. It only keeps the ★ picks for each athlete. That's what drives your storage, Purge and Gallery sections today, and it's why those sections can go.
 
 ## Airo prompts, in order
 Paste one prompt into Airo's AI editor, check the result, then do the next. Each one asks Airo not to delete data.
@@ -52,10 +54,10 @@ Paste one prompt into Airo's AI editor, check the result, then do the next. Each
 > Hide Media Day, Bulk Upload, Gallery and Manage Albums from the sidebar, but keep their pages reachable from a "More tools" link at the bottom. Don't delete any data or features. Only move navigation.
 
 ### Step 3: The Today queue
-> Make the admin home page a "Today" queue, newest first. Show one card per item: (1) ShootProof events with new photos assigned to an athlete: "N new photos of [athlete] from [event]", with a button to pick photos; (2) ShootProof events not assigned to any athlete, with an Assign button; (3) pending card submissions; (4) athletes with no signed media release; (5) unread inbox messages. Each card disappears once it's handled. Put a small site-stats summary at the top.
+> Make the admin home page a "Today" queue, newest first. Show one card per item: (1) ShootProof events with new photos assigned to an athlete: "N new photos of [athlete] from [event]", with a button to pick photos; (2) ShootProof sports events not assigned to any athlete, with an Assign button. Only include events marked as sports, or inside the Davenport gallery. Never show weddings or other private client events here; (3) pending card submissions; (4) athletes with no signed media release; (5) unread inbox messages. Each card disappears once it's handled. Put a small site-stats summary at the top.
 
 ### Step 4: Pick the best photos (the automation)
-> When I open "pick photos" for an athlete and event, show that event's photos in a grid. I tap a star on the best ones and they're added to that athlete's profile photos, newest first. Add an "Auto-pick 5" button that stars the 5 photos ShootProof marks as favorites or highlights (or, if there are none, the first 5). Only starred photos are copied to the site. Never copy an entire event. Each profile photo keeps a "Buy this photo" link to its ShootProof page.
+> When I open "pick photos" for an athlete and event, show that event's photos in a grid. I tap a star on the best ones and they're added to that athlete's profile photos, newest first. Add an "Auto-pick 5" button that stars the 5 photos ShootProof marks as favorites or highlights (or, if there are none, the first 5). Only starred photos are copied to the site. Never copy an entire event. Each profile photo keeps a "Buy this photo" link to its ShootProof page. Only sports events can feed athlete profiles. Add an "Event type" field (Sports / Private) to ShootProof events, set existing weddings and private sessions to Private, and never auto-sync Private events to any profile.
 
 ### Step 5: The athlete's home page (public)
 > Redesign the public player profile as the athlete's home page, in this order: hero photo with name, class, position, number and team; College Scout badge and "Committed: [college]" badge when set; highlight reel; their starred photos, each with Share and "Buy on ShootProof" buttons; "Make my card" (opens the card generator with this athlete's details and photo already filled in); stats; Instagram feed; and contact for coaches (College Scout only). Add a Share button that copies the profile link. Keep the existing client portal and app login working.
@@ -64,7 +66,7 @@ Paste one prompt into Airo's AI editor, check the result, then do the next. Each
 > On the admin player page, add a College Scout tab with: College Scout on/off, committed college, GPA, height, weight, measurables, honors, scouting note, coach name and email, parent name and email (shown only with a signed media release), and a "Print one-sheet" button that makes a one-page PDF for coaches. On /athletes, add a "College Scout" filter and show the committed badge on athlete tiles.
 
 ### Step 7: Public Game Photos page
-> Create a public /games page listing ShootProof events where "Show on Game Photos" is on, newest first, with season and sport filters. Each game shows the date, matchup, cover photo and a "See photos" button linking to its ShootProof album. At the top, show a banner: "Every game photo is $10 — 5 for $39.99." Add "Game Photos" to the main menu.
+> Create a public /games page listing ShootProof sports events where "Show on Game Photos" is on (never Private events), newest first, with season and sport filters. Each game shows the date, matchup, cover photo and a "See photos" button linking to its ShootProof album. At the top, show a banner: "Every game photo is $10 — 5 for $39.99." Add "Game Photos" to the main menu.
 
 ## Stop doing
 - Copying whole games onto the site
