@@ -15,6 +15,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif}
 a{color:inherit}
+/* keep a host site's (Airo) heading, link and button styles from leaking in */
+:is(h1,h2,h3,h4,p,a,button,ul,ol,li,dl,dt,dd,small,span,div,section,article,input,select,img,iframe){color:inherit;font-family:inherit;letter-spacing:normal;text-transform:none;text-shadow:none;box-shadow:none;float:none;min-height:0}
 .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
 .cond{font-family:"Barlow Condensed",Impact,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase}
 .note{background:#1f1630;border:1px dashed var(--accent);border-radius:12px;padding:10px 14px;color:#ddd6fe;font-size:14px;margin:0 0 16px}
@@ -81,11 +83,15 @@ ul.list{margin:0;padding-left:18px} ul.list li{margin:4px 0}
   .printonly{display:block!important}
 }
 .printonly{display:none}
+/* When this sits inside a bigger page (Airo), print only the profile, not the site header and footer */
+@media print{body *{visibility:hidden}#gma-scout,#gma-scout *{visibility:visible}#gma-scout{position:absolute;left:0;top:0;width:100%}}
 </style>
 </head>
 <body>
+<div id="gma-scout">
 <div class="wrap" id="app"><p class="empty">Loading…</p></div>
 <div class="toast" id="toast" role="status"></div>
+</div>
 
 <script>
 (() => {
@@ -93,10 +99,17 @@ ul.list{margin:0;padding-left:18px} ul.list li{margin:4px 0}
 const CFG = Object.assign({
   // Your "Profiles" tab, published as CSV (File > Share > Publish to web). Columns: see profiles-template.csv.
   profilesCsvUrl: "",
+  profilesData: "",     // or paste the CSV rows right here (header row first). Used when profilesCsvUrl is blank.
   gamesUrl: "games.html",                       // the Game Photos page (full https:// address if pasted into another site)
   cardsUrl: "cards-gallery.html",               // the approved-card gallery
   scoutInfoUrl: "https://gmafocus.com/contact", // where "Get your athlete a profile like this" goes
-  brand: "GMA Focus"
+  brand: "GMA Focus",
+  athlete: "",          // lock this page to one athlete, e.g. "Ricky Groff" (for one Airo page per athlete)
+  profileUrl: "",       // where each athlete's page lives, e.g. "https://gmafocus.com/recruit-{slug}". Blank: this page + ?name=
+  listUrl: "",          // where the all-athletes page lives, e.g. "https://gmafocus.com/recruit". Blank: this page
+  printUrl: "",         // a hosted copy of athlete.html for clean one-sheets, e.g. "https://cards.gmafocus.com/athlete.html"
+  linkTarget: "_top",   // "_top" opens links in the same tab. If links do nothing inside an Airo embed, change to "_blank".
+  setTitle: false       // true: change the browser tab title to the athlete's name
 }, window.GMA_CONFIG || {});
 
 const SAMPLE = `name,grad_year,sport,position,school,number,height,weight,gpa,photo_url,highlight_url,hudl_url,stats,measurables,achievements,bio,parent_name,parent_email,coach_name,coach_email,x_handle,instagram,photos,status
@@ -104,7 +117,7 @@ Sample Athlete,2027,Basketball,Point Guard,Davenport High,11,"6'1""",175,3.8,,,,
 Sample Catcher,2026,Baseball,Catcher,Davenport High,10,"5'11""",190,3.5,,,,AVG:.342|HR:6|RBI:31|OBP:.441,Pop time:1.95s|Exit velo:92 mph,2nd Team All-District,Strong arm and steady behind the plate.,Parent Name,parent@example.com,Coach Name,coach@example.com,,,,live`;
 
 /* ---------- helpers ---------- */
-const $ = s => document.querySelector(s), app = $("#app");
+const ROOT = document.getElementById("gma-scout") || document, $ = s => ROOT.querySelector(s), app = $("#app");
 function esc(t){ return String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function safeUrl(u){ u = String(u || "").trim(); return /^https?:\/\//i.test(u) ? u : ""; }
 function safeEmail(e){ e = String(e || "").trim(); return /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(e) ? e : ""; }
@@ -128,13 +141,15 @@ function embed(u){
   return "";
 }
 function pageUrl(){ let base = location.href.split(/[?#]/)[0]; try { if (window.top !== window) base = window.top.location.href.split(/[?#]/)[0]; } catch (_) {} return base; }
+const profileLink = a => CFG.profileUrl ? CFG.profileUrl.replace("{slug}", slug(a.name)).replace("{name}", encodeURIComponent(a.name)) : `${pageUrl()}?name=${encodeURIComponent(a.name)}`;
+const listLink = () => CFG.listUrl || pageUrl();
 function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 1800); }
 const P = (() => { let q = location.search; try { if (!q && window.top !== window) q = window.top.location.search; } catch (e) {} return new URLSearchParams(q); })();
 let sample = false;
 
 /* ---------- one athlete ---------- */
 function profile(a){
-  document.title = `${a.name} · ${a.grad_year} ${a.position || a.sport} · ${CFG.brand} College Scout`;
+  if (CFG.setTitle) document.title = `${a.name} · ${a.grad_year} ${a.position || a.sport} · ${CFG.brand} College Scout`;
   const vid = embed(a.highlight_url), vidLink = safeUrl(a.highlight_url), hudl = safeUrl(a.hudl_url), photo = safeUrl(a.photo_url);
   const facts = [["Class", a.grad_year], ["Pos", a.position], ["#", a.number], ["Ht", a.height], ["Wt", a.weight && a.weight + " lb"], ["GPA", a.gpa]].filter(f => f[1]);
   const stats = pairs(a.stats), meas = pairs(a.measurables), ach = list(a.achievements), pics = list(a.photos).map(safeUrl).filter(Boolean);
@@ -146,10 +161,10 @@ function profile(a){
   app.innerHTML = `
   ${sample ? `<p class="note noprint">This is a sample profile. Connect your Google Sheet (see <code>SETUP-PROFILES.md</code>) to show real athletes.</p>` : ""}
   <div class="row noprint" style="justify-content:space-between;margin-bottom:14px">
-    <a class="btn ghost" href="${esc(pageUrl())}" target="_top">← All athletes</a>
+    <a class="btn ghost" href="${esc(listLink())}" target="${esc(CFG.linkTarget)}">← All athletes</a>
     <div class="row"><button class="btn ghost" id="share" type="button">Share profile</button><button class="btn ghost" id="print" type="button">Print one-sheet</button></div>
   </div>
-  <header class="hero">
+  <div class="hero">
     <div class="photo">${photo ? `<img alt="${esc(a.name)}" src="${esc(photo)}">` : `<span class="cond ini">${esc(initials(a.name))}</span>`}</div>
     <div>
       <span class="badge">★ ${esc(CFG.brand)} College Scout</span>
@@ -157,7 +172,7 @@ function profile(a){
       <p class="line"><b>${esc([a.position, a.sport].filter(Boolean).join(" · "))}</b>${a.school ? ` · ${esc(a.school)}` : ""}</p>
       <div class="facts">${facts.map(([k, v]) => `<div class="fact"><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join("")}</div>
     </div>
-  </header>
+  </div>
   <div class="grid2">
     <div>
       ${vid || vidLink || hudl ? `<section class="box"><h2 class="cond">Highlights</h2>
@@ -169,27 +184,28 @@ function profile(a){
       ${pics.length ? `<section class="box noprint"><h2 class="cond">Game photos</h2><div class="pics">${pics.map(u => `<img loading="lazy" alt="${esc(a.name)} game photo" src="${esc(u)}">`).join("")}</div></section>` : ""}
     </div>
     <div>
-      <section class="box"><h2 class="cond">Contact</h2><div class="contact">
+      ${a.coach_name || ce || a.parent_name || pe || x || ig ? `<section class="box"><h2 class="cond">Contact</h2><div class="contact">
         ${a.coach_name || ce ? `<div class="who"><small>Head coach</small><b>${esc(a.coach_name)}</b>${ce ? `<div class="row" style="margin-top:6px"><a class="btn gold" href="mailto:${esc(ce)}?subject=${subj}">Email coach</a></div><div class="printonly">${esc(ce)}</div>` : ""}</div>` : ""}
         ${a.parent_name || pe ? `<div class="who"><small>Parent / guardian</small><b>${esc(a.parent_name)}</b>${pe ? `<div class="row" style="margin-top:6px"><a class="btn ghost" href="mailto:${esc(pe)}?subject=${subj}">Email family</a></div><div class="printonly">${esc(pe)}</div>` : ""}</div>` : ""}
         ${x || ig ? `<div class="who"><small>Social</small><div class="row" style="margin-top:6px">${x ? `<a class="btn ghost" href="https://x.com/${esc(x)}" target="_blank" rel="noopener">@${esc(x)} on X</a>` : ""}${ig ? `<a class="btn ghost" href="https://instagram.com/${esc(ig)}" target="_blank" rel="noopener">@${esc(ig)}</a>` : ""}</div></div>` : ""}
-      </div></section>
+      </div></section>` : ""}
       ${meas.length ? `<section class="box"><h2 class="cond">Measurables</h2><dl class="kv">${meas.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></section>` : ""}
       ${ach.length ? `<section class="box"><h2 class="cond">Honors</h2><ul class="list">${ach.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>` : ""}
       <section class="box noprint"><h2 class="cond">More</h2><div class="row">
-        ${gamesLink ? `<a class="btn ghost" href="${esc(gamesLink)}" target="_top">Game photos</a>` : ""}
-        ${CFG.cardsUrl ? `<a class="btn ghost" href="${esc(CFG.cardsUrl)}?player=${encodeURIComponent(a.name)}" target="_top">Player cards</a>` : ""}
+        ${gamesLink ? `<a class="btn ghost" href="${esc(gamesLink)}" target="${esc(CFG.linkTarget)}">Game photos</a>` : ""}
+        ${CFG.cardsUrl ? `<a class="btn ghost" href="${esc(CFG.cardsUrl)}?player=${encodeURIComponent(a.name)}" target="${esc(CFG.linkTarget)}">Player cards</a>` : ""}
       </div></section>
     </div>
   </div>
-  <p class="printonly" style="margin-top:8px">Full profile: ${esc(pageUrl())}?name=${encodeURIComponent(a.name)}</p>
+  <p class="printonly" style="margin-top:8px">Full profile: ${esc(profileLink(a))}</p>
   <div class="foot noprint">
     <span>Media and profile by ${esc(CFG.brand)}. Stats provided by the athlete's family and coach.</span>
-    ${CFG.scoutInfoUrl ? `<a class="btn gold" href="${esc(CFG.scoutInfoUrl)}" target="_top">Get your athlete a profile like this</a>` : ""}
+    ${CFG.scoutInfoUrl ? `<a class="btn gold" href="${esc(CFG.scoutInfoUrl)}" target="${esc(CFG.linkTarget)}">Get your athlete a profile like this</a>` : ""}
   </div>`;
-  $("#print").onclick = () => print();
+  $("#print").onclick = () => { if (CFG.printUrl) window.open(`${CFG.printUrl}?name=${encodeURIComponent(a.name)}&print=1`, "_blank"); else print(); };
+  if (P.get("print") === "1") setTimeout(() => print(), 700);
   $("#share").onclick = async () => {
-    const url = `${pageUrl()}?name=${encodeURIComponent(a.name)}`;
+    const url = profileLink(a);
     try { if (navigator.share) { await navigator.share({ title: document.title, url }); return; } } catch (_) { return; }
     try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch (_) { prompt("Copy this link:", url); }
   };
@@ -197,7 +213,7 @@ function profile(a){
 
 /* ---------- all athletes ---------- */
 function directory(all){
-  document.title = `${CFG.brand} College Scout Athletes`;
+  if (CFG.setTitle) document.title = `${CFG.brand} College Scout Athletes`;
   const years = [...new Set(all.map(a => a.grad_year).filter(Boolean))].sort(), sports = [...new Set(all.map(a => a.sport).filter(Boolean))].sort();
   app.innerHTML = `
   ${sample ? `<p class="note">These are sample athletes. Connect your Google Sheet (see <code>SETUP-PROFILES.md</code>) to show real ones.</p>` : ""}
@@ -210,12 +226,12 @@ function directory(all){
     <select id="year" aria-label="Class"><option value="">All classes</option>${years.map(s => `<option>${esc(s)}</option>`).join("")}</select>
   </div>
   <div class="dir" id="dir"></div><p class="empty" id="none" hidden>No athletes match.</p>
-  <div class="foot"><span>Coaches: every profile has highlights, stats and contacts.</span>${CFG.scoutInfoUrl ? `<a class="btn gold" href="${esc(CFG.scoutInfoUrl)}" target="_top">Parents: get your athlete listed</a>` : ""}</div>`;
+  <div class="foot"><span>Coaches: every profile has highlights, stats and contacts.</span>${CFG.scoutInfoUrl ? `<a class="btn gold" href="${esc(CFG.scoutInfoUrl)}" target="${esc(CFG.linkTarget)}">Parents: get your athlete listed</a>` : ""}</div>`;
   const draw = () => {
     const q = $("#q").value.trim().toLowerCase(), sp = $("#sport").value, yr = $("#year").value;
     const l = all.filter(a => (!q || [a.name, a.position, a.school].join(" ").toLowerCase().includes(q)) && (!sp || a.sport === sp) && (!yr || a.grad_year === yr));
     $("#dir").innerHTML = l.map(a => { const ph = safeUrl(a.photo_url); return `
-      <a class="tile" href="${esc(pageUrl())}?name=${encodeURIComponent(a.name)}" target="_top">
+      <a class="tile" href="${esc(profileLink(a))}" target="${esc(CFG.linkTarget)}">
         <div class="photo">${ph ? `<img loading="lazy" alt="" src="${esc(ph)}">` : `<span class="cond ini">${esc(initials(a.name))}</span>`}</div>
         <div class="t"><h3 class="cond">${esc(a.name)}</h3><p>${esc([a.grad_year && "Class of " + a.grad_year, a.position, a.sport].filter(Boolean).join(" · "))}</p></div>
       </a>`; }).join("");
@@ -226,12 +242,12 @@ function directory(all){
 
 function start(rows){
   const all = rows.filter(r => r.name && !/^(hidden|draft|off)$/i.test(r.status || ""));
-  const want = P.get("name") || P.get("athlete");
+  const want = CFG.athlete || P.get("name") || P.get("athlete");
   if (want) { const a = all.find(r => slug(r.name) === slug(want)); if (a) return profile(a);
-    app.innerHTML = `<p class="empty">We couldn't find that athlete. <a href="${esc(pageUrl())}" target="_top">See all athletes</a></p>`; return; }
+    app.innerHTML = `<p class="empty">We couldn't find that athlete. <a href="${esc(listLink())}" target="${esc(CFG.linkTarget)}">See all athletes</a></p>`; return; }
   directory(all);
 }
-if (!CFG.profilesCsvUrl) { sample = true; start(parseCSV(SAMPLE)); return; }
+if (!CFG.profilesCsvUrl) { if (CFG.profilesData.trim()) start(parseCSV(CFG.profilesData.trim())); else { sample = true; start(parseCSV(SAMPLE)); } return; }
 fetch(CFG.profilesCsvUrl).then(r => { if (!r.ok) throw 0; return r.text(); }).then(t => start(parseCSV(t)))
   .catch(() => { app.innerHTML = `<p class="empty">Profiles couldn't load right now. Please try again in a minute.</p>`; });
 })();

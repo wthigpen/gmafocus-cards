@@ -15,6 +15,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif}
 a{color:inherit}
+/* keep a host site's (Airo) heading, link and button styles from leaking in */
+:is(h1,h2,h3,h4,p,a,button,ul,ol,li,dl,dt,dd,small,span,div,section,article,input,select,img,iframe){color:inherit;font-family:inherit;letter-spacing:normal;text-transform:none;text-shadow:none;box-shadow:none;float:none;min-height:0}
 .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
 .display{font:800 italic 40px/0.95 "Barlow Condensed",Impact,sans-serif;text-transform:uppercase;margin:0}
 .display span{color:var(--accent)}
@@ -76,6 +78,7 @@ a{color:inherit}
 </style>
 </head>
 <body>
+<div id="gma-games">
 <div class="wrap">
   <section class="deal" aria-label="Current offer">
     <div>
@@ -123,6 +126,7 @@ a{color:inherit}
   </section>
 </div>
 <div class="toast" id="toast" role="status"></div>
+</div>
 
 <script>
 (() => {
@@ -130,6 +134,7 @@ a{color:inherit}
 const CFG = Object.assign({
   // Your "Games" tab, published as CSV (File > Share > Publish to web). Columns: see games-template.csv.
   gamesCsvUrl: "",
+  gamesData: "",        // or paste the CSV rows right here (header row first). Used when gamesCsvUrl is blank.
   // Where each package button goes. Use full https:// addresses if this page is pasted into another site.
   links: {
     gameDay: "https://photos.gmafocus.com/booking/davenport",
@@ -139,7 +144,8 @@ const CFG = Object.assign({
   scoutPrice: "",          // e.g. "From $___" once you set it; leave "" to show "Elite"
   newDays: 7,              // "New" badge for galleries this many days old or less
   lastChanceDays: 2,       // "Last chance" badge when the deal ends within this many days
-  defaultDealDays: 7       // if deal_ends is blank, the deal runs this long after the game date
+  defaultDealDays: 7,      // if deal_ends is blank, the deal runs this long after the game date
+  linkTarget: "_top"       // "_top" opens links in the same tab. If links do nothing inside an Airo embed, change to "_blank".
 }, window.GMA_CONFIG || {});
 
 const SAMPLE = `date,sport,school,opponent,home_away,level,gallery_url,cover_url,highlight_url,deal_ends,notes
@@ -149,7 +155,7 @@ ${iso(-6)},Football,Davenport High,Steele,Home,Varsity,#,,#,${iso(1)},Sample gam
 ${iso(-20)},Volleyball,Davenport High,Clemens,Home,Varsity,#,,,,Sample game`;
 
 /* ---------- helpers ---------- */
-const $ = s => document.querySelector(s);
+const ROOT = document.getElementById("gma-games") || document, $ = s => ROOT.querySelector(s);
 function iso(off){ const d = new Date(); d.setDate(d.getDate() + off); return d.toISOString().slice(0,10); }
 function esc(t){ return String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function safeUrl(u){ u = String(u || "").trim(); return /^https?:\/\//i.test(u) ? u : (u === "#" ? "#" : ""); }
@@ -169,7 +175,7 @@ const fmt = d => d ? d.toLocaleDateString(undefined, { weekday:"short", month:"s
 function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 1800); }
 
 /* ---------- packages ---------- */
-document.querySelectorAll("[data-link]").forEach(a => { const u = safeUrl(CFG.links[a.dataset.link]); if (u) { a.href = u; a.target = "_top"; } else a.hidden = true; });
+ROOT.querySelectorAll("[data-link]").forEach(a => { const u = safeUrl(CFG.links[a.dataset.link]); if (u) { a.href = u; a.target = CFG.linkTarget; } else a.hidden = true; });
 if (CFG.scoutPrice) $("#scoutPrice").textContent = CFG.scoutPrice;
 
 /* ---------- games ---------- */
@@ -181,7 +187,7 @@ function load(rows){
       key: [r.date, r.school, r.opponent].join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "-") };
   }).filter(g => g.d && g.gallery).sort((a, b) => b.d - a.d);
   fill("#sport", games.map(g => g.sport)); fill("#school", games.map(g => g.school));
-  const P = new URLSearchParams(location.search);
+  const P = (() => { let q = location.search; try { if (!q && window.top !== window) q = window.top.location.search; } catch (_) {} return new URLSearchParams(q); })();
   if (P.get("sport")) $("#sport").value = P.get("sport");
   if (P.get("school")) $("#school").value = P.get("school");
   show();
@@ -203,7 +209,7 @@ function show(){
     const card = document.createElement("article");
     card.className = "game"; card.id = "g-" + g.key;
     card.innerHTML = `
-      <a href="${esc(g.gallery)}" target="_top" rel="noopener" style="text-decoration:none">
+      <a href="${esc(g.gallery)}" target="_blank" rel="noopener" style="text-decoration:none">
         <div class="cover">${g.cover ? `<img loading="lazy" alt="" src="${esc(g.cover)}">` : `<div class="vs">${vs}</div>`}<div class="badges">${badges}</div></div>
       </a>
       <div class="info">
@@ -211,8 +217,8 @@ function show(){
         <div class="sub">${esc([fmt(g.d), g.sport, g.level].filter(Boolean).join(" · "))}</div>
         <div class="sub">${dealOn ? `Buy 4, get 1 free through ${esc(fmt(g.ends))}` : "Photos available"}</div>
         <div class="row">
-          <a class="btn sm" href="${esc(g.gallery)}" target="_top" rel="noopener">See photos</a>
-          ${g.video ? `<a class="btn sm ghost" href="${esc(g.video)}" target="_top" rel="noopener">Watch highlights</a>` : ""}
+          <a class="btn sm" href="${esc(g.gallery)}" target="_blank" rel="noopener">See photos</a>
+          ${g.video ? `<a class="btn sm ghost" href="${esc(g.video)}" target="_blank" rel="noopener">Watch highlights</a>` : ""}
           <button class="btn sm ghost" type="button" data-share="${esc(g.key)}">Share</button>
         </div>
       </div>`;
@@ -231,7 +237,7 @@ $("#grid").addEventListener("click", async e => {
 });
 ["#q", "#sport", "#school"].forEach(s => $(s).addEventListener("input", show));
 
-if (!CFG.gamesCsvUrl) { $("#sample").hidden = false; load(parseCSV(SAMPLE)); return; }
+if (!CFG.gamesCsvUrl) { if (CFG.gamesData.trim()) load(parseCSV(CFG.gamesData.trim())); else { $("#sample").hidden = false; load(parseCSV(SAMPLE)); } return; }
 $("#empty").hidden = false; $("#empty").textContent = "Loading games…";
 fetch(CFG.gamesCsvUrl).then(r => { if (!r.ok) throw 0; return r.text(); }).then(t => load(parseCSV(t)))
   .catch(() => { $("#empty").hidden = false; $("#empty").textContent = "Galleries couldn't load right now. Please try again in a minute."; });
