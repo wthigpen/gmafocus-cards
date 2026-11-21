@@ -78,6 +78,9 @@ put(F + "THIRD_PARTY_LICENSE-holospot.txt", src="THIRD_PARTY_LICENSE-holospot.tx
 for f in ["SETUP-GAMES.md", "SETUP-PROFILES.md", "SETUP-SUBMISSIONS.md", "AIRO-INSTALL.md", "README.md", "COMPARISON.md"]:
     put("4-Guides/" + f.replace(".md", ".txt"), md2txt(f))
 
+# 6 · Admin rework
+put("6-Admin-Rework/ADMIN-REWORK - plan and Airo prompts.txt", md2txt("ADMIN-REWORK.md"))
+
 # 5 · Update queue
 Q = [
  ("1", "Now", "ShootProof", "Confirm Buy 4 Get 1 Free works at checkout (it is a Cart Bundle; also 5 Digital Photos package $39.99)", "ShootProof > Cart Bundles", "", "Done"),
@@ -94,6 +97,14 @@ Q = [
  ("12", "This week", "Airo site fixes", "Add Contact to menu; add College Scout starting price; remove 'v1.0 Platform'", "Airo homepage", "", "To do"),
  ("13", "This week", "Airo", "Homepage College Scout section: add 'Ricky Groff \u2192 committed to UT Dallas' proof + 'See College Scout profiles' button to /recruit", "Airo homepage", "", "To do"),
  ("14", "This week", "Freefield", "On the MSI: Claude Code session in GMA Focus folder; make Freefield output ShootProof / social / per-athlete folders", "MSI", "", "To do"),
+ ("A0", "Admin rework", "Airo admin", "Step 0: backup export", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A1", "Admin rework", "Airo admin", "Step 1: remove Game Albums", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A2", "Admin rework", "Airo admin", "Step 2: regroup sidebar into Today / Athletes / ShootProof / Clients / Site", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A3", "Admin rework", "Airo admin", "Step 3: Today queue", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A4", "Admin rework", "Airo admin", "Step 4: star best photos / Auto-pick 5", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A5", "Admin rework", "Airo site", "Step 5: athlete home page", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A6", "Admin rework", "Airo admin", "Step 6: College Scout fields + one-sheet", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
+ ("A7", "Admin rework", "Airo site", "Step 7: public Game Photos page from ShootProof events", "6-Admin-Rework", "ADMIN-REWORK", "To do"),
  ("15", "After every game", "Routine", "Upload to ShootProof album: Davenport > season > sport > vs Opponent · Date", "ShootProof", "", "Repeat"),
  ("16", "After every game", "Routine", "Add one row to Games tab with that album's link", "Google Sheet > Games", "", "Repeat"),
  ("17", "After every game", "Routine", "Post 3-5 teasers within 24h with gmafocus.com/games link; tag players + school", "Instagram / Facebook / X", "", "Repeat"),
@@ -116,6 +127,7 @@ WHAT'S IN HERE
   2-Google-Sheet\\         The Apps Script + CSV files for each Sheet tab
   3-Full-Pages\\           Standalone pages for cards.gmafocus.com (double-click to preview)
   4-Guides\\               Setup guides for every piece
+  6-Admin-Rework\\         The admin cleanup plan + Airo prompts, step by step
   5-Update-Queue\\         UPDATE-QUEUE.csv: every task in order. Open it in Excel or
                           Google Sheets and change Status to Done as you go.
 
