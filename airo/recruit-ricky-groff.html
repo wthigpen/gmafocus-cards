@@ -1,0 +1,262 @@
+<!-- GMA Focus · Ricky Groff's College Scout profile → paste on gmafocus.com/recruit/ricky-groff
+     Paste ALL of this into one Airo custom code / HTML section. Settings are in GMA_CONFIG just below.
+     Built from athlete.html by tools/build-airo.py. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+#gma-scout{--bg:#0a0e1a;--panel:#121829;--line:#263050;--text:#eef1f8;--muted:#97a0b8;--accent:#a855f7;--gold:#fbbf24;color-scheme:dark}
+#gma-scout,#gma-scout *{box-sizing:border-box}
+#gma-scout{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif}
+#gma-scout a{color:inherit}
+#gma-scout :is(h1,h2,h3,h4,p,a,button,ul,ol,li,dl,dt,dd,section,article,input,select,img,iframe){color:inherit;font-family:inherit;letter-spacing:normal;text-transform:none;text-shadow:none;box-shadow:none;float:none;min-height:0}
+#gma-scout .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+#gma-scout .cond{font-family:"Barlow Condensed",Impact,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase}
+#gma-scout .note{background:#1f1630;border:1px dashed var(--accent);border-radius:12px;padding:10px 14px;color:#ddd6fe;font-size:14px;margin:0 0 16px}
+#gma-scout .commit{display:inline-flex;align-items:center;gap:8px;margin:6px 0 4px;background:#052e1a;border:1px solid #22c55e;color:#bbf7d0;border-radius:999px;padding:6px 12px;font:700 12px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+#gma-scout .commit b{color:#fff}
+#gma-scout .tile .commit{margin:6px 0 0}
+#gma-scout .badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#b45309,var(--gold));color:#1a1300;border-radius:999px;padding:6px 12px;font:700 12px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+#gma-scout .hero{display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:end;margin-bottom:22px}
+#gma-scout .photo{aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#312e81,#0f172a);display:grid;place-items:center;border:1px solid var(--line)}
+#gma-scout .photo img{width:100%;height:100%;object-fit:cover}
+#gma-scout .photo .ini{font-size:88px;color:#c4b5fd}
+#gma-scout .hero h1{font-size:clamp(44px,8vw,76px);line-height:.88;margin:10px 0 8px}
+#gma-scout .hero .badge{margin:0 8px 0 0}
+#gma-scout .hero h1 span{color:var(--accent)}
+#gma-scout .line{color:var(--muted);font-size:16px;margin:0 0 14px}
+#gma-scout .line b{color:var(--text)}
+#gma-scout .facts{display:flex;flex-wrap:wrap;gap:8px}
+#gma-scout .fact{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 12px;min-width:84px}
+#gma-scout .fact small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+#gma-scout .fact b{font:800 italic 24px/1.1 "Barlow Condensed",sans-serif}
+@media (max-width:700px){#gma-scout .hero{grid-template-columns:1fr}
+#gma-scout .photo{max-width:240px}}
+#gma-scout .grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+@media (max-width:860px){#gma-scout .grid2{grid-template-columns:1fr}}
+#gma-scout section.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+#gma-scout section.box h2{font-size:24px;margin:0 0 10px;line-height:1}
+#gma-scout .video{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
+#gma-scout .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#gma-scout .stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+#gma-scout .stat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+#gma-scout .stat b{display:block;font:800 italic 30px/1 "Barlow Condensed",sans-serif;color:var(--gold)}
+#gma-scout .stat small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+#gma-scout ul.list{margin:0;padding-left:18px}
+#gma-scout ul.list li{margin:4px 0}
+#gma-scout .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+#gma-scout .kv dt{color:var(--muted)}
+#gma-scout .kv dd{margin:0;font-weight:600}
+#gma-scout .pics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+#gma-scout .pics img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;display:block}
+#gma-scout .btn{display:inline-flex;gap:6px;align-items:center;justify-content:center;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 14px;font:600 14px/1 Inter,sans-serif;text-decoration:none;cursor:pointer}
+#gma-scout .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+#gma-scout .btn.gold{background:var(--gold);color:#1a1300}
+#gma-scout .row{display:flex;gap:8px;flex-wrap:wrap}
+#gma-scout .contact{display:grid;gap:10px}
+#gma-scout .who{border-top:1px solid var(--line);padding-top:10px}
+#gma-scout .who:first-child{border:0;padding:0}
+#gma-scout .who small{color:var(--muted);display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+#gma-scout .dir{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+#gma-scout .tile{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-decoration:none;transition:transform .2s,border-color .2s}
+#gma-scout .tile:hover,#gma-scout .tile:focus-visible{transform:translateY(-3px);border-color:var(--gold)}
+#gma-scout .tile .photo{border:0;border-radius:0}
+#gma-scout .tile .photo .ini{font-size:64px}
+#gma-scout .tile div.t{padding:10px 12px 12px}
+#gma-scout .tile h3{margin:0;font-size:22px;line-height:1}
+#gma-scout .tile p{margin:4px 0 0;color:var(--muted);font-size:13px}
+#gma-scout .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+#gma-scout .filters input,#gma-scout .filters select{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:inherit;font:inherit;min-width:0;flex:1 1 170px}
+#gma-scout .foot{margin-top:26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13px}
+#gma-scout .empty{color:var(--muted);padding:30px 0;text-align:center}
+#gma-scout .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
+#gma-scout .toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){#gma-scout .tile{transition:none}}
+@media print{#gma-scout{--bg:#fff;--panel:#fff;--line:#ccc;--text:#111;--muted:#555;--gold:#7c3aed}
+#gma-scout{font-size:12px}
+#gma-scout .wrap{padding:0}
+#gma-scout .noprint,#gma-scout .video,#gma-scout .pics,#gma-scout .note,#gma-scout .contact .btn{display:none!important}
+#gma-scout .hero{grid-template-columns:150px 1fr;gap:14px}
+#gma-scout .hero h1{font-size:44px}
+#gma-scout section.box{break-inside:avoid;padding:10px;margin-bottom:8px}
+#gma-scout .grid2{grid-template-columns:1.4fr 1fr}
+#gma-scout .printonly{display:block!important}}
+#gma-scout .printonly{display:none}
+@media print{body *{visibility:hidden}
+#gma-scout,#gma-scout *{visibility:visible}
+#gma-scout{position:absolute;left:0;top:0;width:100%}}
+</style>
+<script>window.GMA_CONFIG = {
+  "profilesCsvUrl": "",
+  "profilesData": "name,grad_year,sport,position,school,number,height,weight,gpa,photo_url,highlight_url,hudl_url,stats,measurables,achievements,bio,parent_name,parent_email,coach_name,coach_email,x_handle,instagram,photos,status,committed\nRicky Groff,2027,Basketball,,Davenport High,,,,,https://gmafocus.com/airo-assets/images/athletes/ricky-groff-spotlight,,,,,Committed to UT Dallas,,,,,,,,,live,UT Dallas",
+  "gamesUrl": "https://gmafocus.com/games",
+  "cardsUrl": "https://gmafocus.com/cards",
+  "scoutInfoUrl": "https://gmafocus.com/contact",
+  "profileUrl": "https://gmafocus.com/recruit/{slug}",
+  "listUrl": "https://gmafocus.com/recruit",
+  "linkTarget": "_top",
+  "athlete": "Ricky Groff"
+};</script>
+<div id="gma-scout">
+<div class="wrap" id="app"><p class="empty">Loading…</p></div>
+<div class="toast" id="toast" role="status"></div>
+</div>
+<script>
+(() => {
+/* ---------- settings: edit these ---------- */
+const CFG = Object.assign({
+  // Your "Profiles" tab, published as CSV (File > Share > Publish to web). Columns: see profiles-template.csv.
+  profilesCsvUrl: "",
+  profilesData: "",     // or paste the CSV rows right here (header row first). Used when profilesCsvUrl is blank.
+  gamesUrl: "games.html",                       // the Game Photos page (full https:// address if pasted into another site)
+  cardsUrl: "cards-gallery.html",               // the approved-card gallery
+  scoutInfoUrl: "https://gmafocus.com/contact", // where "Get your athlete a profile like this" goes
+  brand: "GMA Focus",
+  athlete: "",          // lock this page to one athlete, e.g. "Ricky Groff" (for one Airo page per athlete)
+  profileUrl: "",       // where each athlete's page lives, e.g. "https://gmafocus.com/recruit-{slug}". Blank: this page + ?name=
+  listUrl: "",          // where the all-athletes page lives, e.g. "https://gmafocus.com/recruit". Blank: this page
+  printUrl: "",         // a hosted copy of athlete.html for clean one-sheets, e.g. "https://cards.gmafocus.com/athlete.html"
+  linkTarget: "_top",   // "_top" opens links in the same tab. If links do nothing inside an Airo embed, change to "_blank".
+  setTitle: false       // true: change the browser tab title to the athlete's name
+}, window.GMA_CONFIG || {});
+
+const SAMPLE = `name,grad_year,sport,position,school,number,height,weight,gpa,photo_url,highlight_url,hudl_url,stats,measurables,achievements,bio,parent_name,parent_email,coach_name,coach_email,x_handle,instagram,photos,status,committed
+Sample Athlete,2027,Basketball,Point Guard,Davenport High,11,"6'1""",175,3.8,,,,PPG:18.4|REB:6.1|AST:7.2|STL:2.3|FG%:48|3P%:39,"Wingspan:6'4""|Vertical:32 in|Lane agility:10.9s",All-District 1st Team (2026)|Team captain|Academic All-State,"Floor general who pushes the pace, runs the offense and guards the other team's best ball handler.",Parent Name,parent@example.com,Coach Name,coach@example.com,,,,live
+Sample Catcher,2026,Baseball,Catcher,Davenport High,10,"5'11""",190,3.5,,,,AVG:.342|HR:6|RBI:31|OBP:.441,Pop time:1.95s|Exit velo:92 mph,2nd Team All-District,Strong arm and steady behind the plate.,Parent Name,parent@example.com,Coach Name,coach@example.com,,,,live`;
+
+/* ---------- helpers ---------- */
+const ROOT = document.getElementById("gma-scout") || document, $ = s => ROOT.querySelector(s), app = $("#app");
+function esc(t){ return String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function safeUrl(u){ u = String(u || "").trim(); return /^https?:\/\//i.test(u) ? u : ""; }
+function safeEmail(e){ e = String(e || "").trim(); return /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(e) ? e : ""; }
+function parseCSV(t){ const rows=[]; let row=[], f="", q=false;
+  for(let i=0;i<t.length;i++){ const ch=t[i];
+    if(q){ if(ch==='"'){ if(t[i+1]==='"'){ f+='"'; i++; } else q=false; } else f+=ch; }
+    else if(ch==='"') q=true; else if(ch===","){ row.push(f); f=""; } else if(ch==="\n"||ch==="\r"){ if(ch==="\r"&&t[i+1]==="\n") i++; row.push(f); rows.push(row); row=[]; f=""; } else f+=ch; }
+  if(f||row.length){ row.push(f); rows.push(row); }
+  const head=(rows.shift()||[]).map(h=>h.trim().toLowerCase().replace(/[^a-z0-9]+/g,"_"));
+  return rows.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(head.map((h,i)=>[h,(r[i]||"").trim()])));
+}
+const pairs = s => String(s || "").split("|").map(x => x.trim()).filter(Boolean).map(x => { const i = x.indexOf(":"); return i > 0 ? [x.slice(0,i).trim(), x.slice(i+1).trim()] : [x, ""]; });
+const list = s => String(s || "").split("|").map(x => x.trim()).filter(Boolean);
+const slug = s => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const initials = n => n.split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase();
+function embed(u){
+  u = safeUrl(u); if (!u) return "";
+  let m = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{11})/.exec(u);
+  if (m) return `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0`;
+  m = /vimeo\.com\/(\d+)/.exec(u); if (m) return `https://player.vimeo.com/video/${m[1]}`;
+  return "";
+}
+function pageUrl(){ let base = location.href.split(/[?#]/)[0]; try { if (window.top !== window) base = window.top.location.href.split(/[?#]/)[0]; } catch (_) {} return base; }
+const profileLink = a => CFG.profileUrl ? CFG.profileUrl.replace("{slug}", slug(a.name)).replace("{name}", encodeURIComponent(a.name)) : `${pageUrl()}?name=${encodeURIComponent(a.name)}`;
+const listLink = () => CFG.listUrl || pageUrl();
+function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 1800); }
+const P = (() => { let q = location.search; try { if (!q && window.top !== window) q = window.top.location.search; } catch (e) {} return new URLSearchParams(q); })();
+let sample = false;
+
+/* ---------- one athlete ---------- */
+function profile(a){
+  if (CFG.setTitle) document.title = `${a.name} · ${a.grad_year} ${a.position || a.sport} · ${CFG.brand} College Scout`;
+  const vid = embed(a.highlight_url), vidLink = safeUrl(a.highlight_url), hudl = safeUrl(a.hudl_url), photo = safeUrl(a.photo_url);
+  const facts = [["Class", a.grad_year], ["Pos", a.position], ["#", a.number], ["Ht", a.height], ["Wt", a.weight && a.weight + " lb"], ["GPA", a.gpa]].filter(f => f[1]);
+  const stats = pairs(a.stats), meas = pairs(a.measurables), ach = list(a.achievements), pics = list(a.photos).map(safeUrl).filter(Boolean);
+  const pe = safeEmail(a.parent_email), ce = safeEmail(a.coach_email);
+  const x = String(a.x_handle || "").replace(/^@/, "").replace(/[^\w]/g, ""), ig = String(a.instagram || "").replace(/^@/, "").replace(/[^\w.]/g, "");
+  const subj = encodeURIComponent(`Recruiting interest: ${a.name} (${a.grad_year} ${a.position || a.sport})`);
+  const gamesLink = CFG.gamesUrl && `${CFG.gamesUrl}?school=${encodeURIComponent(a.school || "")}&sport=${encodeURIComponent(a.sport || "")}`;
+
+  app.innerHTML = `
+  ${sample ? `<p class="note noprint">This is a sample profile. Connect your Google Sheet (see <code>SETUP-PROFILES.md</code>) to show real athletes.</p>` : ""}
+  <div class="row noprint" style="justify-content:space-between;margin-bottom:14px">
+    <a class="btn ghost" href="${esc(listLink())}" target="${esc(CFG.linkTarget)}">← All athletes</a>
+    <div class="row"><button class="btn ghost" id="share" type="button">Share profile</button><button class="btn ghost" id="print" type="button">Print one-sheet</button></div>
+  </div>
+  <div class="hero">
+    <div class="photo">${photo ? `<img alt="${esc(a.name)}" src="${esc(photo)}">` : `<span class="cond ini">${esc(initials(a.name))}</span>`}</div>
+    <div>
+      <span class="badge">★ ${esc(CFG.brand)} College Scout</span>${a.committed ? `<span class="commit">✓ Committed: <b>${esc(a.committed)}</b></span>` : ""}
+      <h1 class="cond">${esc(a.name)}${a.grad_year ? ` <span>'${esc(String(a.grad_year).slice(-2))}</span>` : ""}</h1>
+      <p class="line"><b>${esc([a.position, a.sport].filter(Boolean).join(" · "))}</b>${a.school ? ` · ${esc(a.school)}` : ""}</p>
+      <div class="facts">${facts.map(([k, v]) => `<div class="fact"><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join("")}</div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div>
+      ${vid || vidLink || hudl ? `<section class="box"><h2 class="cond">Highlights</h2>
+        ${vid ? `<div class="video noprint"><iframe src="${esc(vid)}" title="${esc(a.name)} highlights" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>` : ""}
+        <div class="row" style="margin-top:${vid ? 10 : 0}px">${vidLink ? `<a class="btn" href="${esc(vidLink)}" target="_blank" rel="noopener">▶ Watch highlights</a>` : ""}${hudl ? `<a class="btn ghost" href="${esc(hudl)}" target="_blank" rel="noopener">Hudl profile</a>` : ""}</div>
+        <p class="printonly">Highlights: ${esc(vidLink || hudl)}</p></section>` : ""}
+      ${stats.length ? `<section class="box"><h2 class="cond">Season stats</h2><div class="stats">${stats.map(([k, v]) => `<div class="stat"><b>${esc(v)}</b><small>${esc(k)}</small></div>`).join("")}</div></section>` : ""}
+      ${a.bio ? `<section class="box"><h2 class="cond">Scouting note</h2><p style="margin:0">${esc(a.bio)}</p></section>` : ""}
+      ${pics.length ? `<section class="box noprint"><h2 class="cond">Game photos</h2><div class="pics">${pics.map(u => `<img loading="lazy" alt="${esc(a.name)} game photo" src="${esc(u)}">`).join("")}</div></section>` : ""}
+    </div>
+    <div>
+      ${a.coach_name || ce || a.parent_name || pe || x || ig ? `<section class="box"><h2 class="cond">Contact</h2><div class="contact">
+        ${a.coach_name || ce ? `<div class="who"><small>Head coach</small><b>${esc(a.coach_name)}</b>${ce ? `<div class="row" style="margin-top:6px"><a class="btn gold" href="mailto:${esc(ce)}?subject=${subj}">Email coach</a></div><div class="printonly">${esc(ce)}</div>` : ""}</div>` : ""}
+        ${a.parent_name || pe ? `<div class="who"><small>Parent / guardian</small><b>${esc(a.parent_name)}</b>${pe ? `<div class="row" style="margin-top:6px"><a class="btn ghost" href="mailto:${esc(pe)}?subject=${subj}">Email family</a></div><div class="printonly">${esc(pe)}</div>` : ""}</div>` : ""}
+        ${x || ig ? `<div class="who"><small>Social</small><div class="row" style="margin-top:6px">${x ? `<a class="btn ghost" href="https://x.com/${esc(x)}" target="_blank" rel="noopener">@${esc(x)} on X</a>` : ""}${ig ? `<a class="btn ghost" href="https://instagram.com/${esc(ig)}" target="_blank" rel="noopener">@${esc(ig)}</a>` : ""}</div></div>` : ""}
+      </div></section>` : ""}
+      ${meas.length ? `<section class="box"><h2 class="cond">Measurables</h2><dl class="kv">${meas.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></section>` : ""}
+      ${ach.length ? `<section class="box"><h2 class="cond">Honors</h2><ul class="list">${ach.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>` : ""}
+      <section class="box noprint"><h2 class="cond">More</h2><div class="row">
+        ${gamesLink ? `<a class="btn ghost" href="${esc(gamesLink)}" target="${esc(CFG.linkTarget)}">Game photos</a>` : ""}
+        ${CFG.cardsUrl ? `<a class="btn ghost" href="${esc(CFG.cardsUrl)}?player=${encodeURIComponent(a.name)}" target="${esc(CFG.linkTarget)}">Player cards</a>` : ""}
+      </div></section>
+    </div>
+  </div>
+  <p class="printonly" style="margin-top:8px">Full profile: ${esc(profileLink(a))}</p>
+  <div class="foot noprint">
+    <span>Media and profile by ${esc(CFG.brand)}. Stats provided by the athlete's family and coach.</span>
+    ${CFG.scoutInfoUrl ? `<a class="btn gold" href="${esc(CFG.scoutInfoUrl)}" target="${esc(CFG.linkTarget)}">Get your athlete a profile like this</a>` : ""}
+  </div>`;
+  $("#print").onclick = () => { if (CFG.printUrl) window.open(`${CFG.printUrl}?name=${encodeURIComponent(a.name)}&print=1`, "_blank"); else print(); };
+  if (P.get("print") === "1") setTimeout(() => print(), 700);
+  $("#share").onclick = async () => {
+    const url = profileLink(a);
+    try { if (navigator.share) { await navigator.share({ title: document.title, url }); return; } } catch (_) { return; }
+    try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch (_) { prompt("Copy this link:", url); }
+  };
+}
+
+/* ---------- all athletes ---------- */
+function directory(all){
+  if (CFG.setTitle) document.title = `${CFG.brand} College Scout Athletes`;
+  const years = [...new Set(all.map(a => a.grad_year).filter(Boolean))].sort(), sports = [...new Set(all.map(a => a.sport).filter(Boolean))].sort();
+  app.innerHTML = `
+  ${sample ? `<p class="note">These are sample athletes. Connect your Google Sheet (see <code>SETUP-PROFILES.md</code>) to show real ones.</p>` : ""}
+  <span class="badge">★ ${esc(CFG.brand)} College Scout</span>
+  <h1 class="cond" style="font-size:clamp(40px,7vw,64px);line-height:.9;margin:10px 0 6px">Recruit <span style="color:var(--accent)">Davenport</span></h1>
+  <p class="line">Highlights, stats and contacts for college coaches. Tap an athlete to see their profile.</p>
+  <div class="filters">
+    <input id="q" type="search" placeholder="Search name, position or school" aria-label="Search">
+    <select id="sport" aria-label="Sport"><option value="">All sports</option>${sports.map(s => `<option>${esc(s)}</option>`).join("")}</select>
+    <select id="year" aria-label="Class"><option value="">All classes</option>${years.map(s => `<option>${esc(s)}</option>`).join("")}</select>
+  </div>
+  <div class="dir" id="dir"></div><p class="empty" id="none" hidden>No athletes match.</p>
+  <div class="foot"><span>Coaches: every profile has highlights, stats and contacts.</span>${CFG.scoutInfoUrl ? `<a class="btn gold" href="${esc(CFG.scoutInfoUrl)}" target="${esc(CFG.linkTarget)}">Parents: get your athlete listed</a>` : ""}</div>`;
+  const draw = () => {
+    const q = $("#q").value.trim().toLowerCase(), sp = $("#sport").value, yr = $("#year").value;
+    const l = all.filter(a => (!q || [a.name, a.position, a.school].join(" ").toLowerCase().includes(q)) && (!sp || a.sport === sp) && (!yr || a.grad_year === yr));
+    $("#dir").innerHTML = l.map(a => { const ph = safeUrl(a.photo_url); return `
+      <a class="tile" href="${esc(profileLink(a))}" target="${esc(CFG.linkTarget)}">
+        <div class="photo">${ph ? `<img loading="lazy" alt="" src="${esc(ph)}">` : `<span class="cond ini">${esc(initials(a.name))}</span>`}</div>
+        <div class="t"><h3 class="cond">${esc(a.name)}</h3><p>${esc([a.grad_year && "Class of " + a.grad_year, a.position, a.sport].filter(Boolean).join(" · "))}</p>${a.committed ? `<span class="commit">✓ ${esc(a.committed)}</span>` : ""}</div>
+      </a>`; }).join("");
+    $("#none").hidden = l.length > 0;
+  };
+  ["#q", "#sport", "#year"].forEach(s => $(s).addEventListener("input", draw)); draw();
+}
+
+function start(rows){
+  const all = rows.filter(r => r.name && !/^(hidden|draft|off)$/i.test(r.status || ""));
+  const want = CFG.athlete || P.get("name") || P.get("athlete");
+  if (want) { const a = all.find(r => slug(r.name) === slug(want)); if (a) return profile(a);
+    app.innerHTML = `<p class="empty">We couldn't find that athlete. <a href="${esc(listLink())}" target="${esc(CFG.linkTarget)}">See all athletes</a></p>`; return; }
+  directory(all);
+}
+if (!CFG.profilesCsvUrl) { if (CFG.profilesData.trim()) start(parseCSV(CFG.profilesData.trim())); else { sample = true; start(parseCSV(SAMPLE)); } return; }
+fetch(CFG.profilesCsvUrl).then(r => { if (!r.ok) throw 0; return r.text(); }).then(t => start(parseCSV(t)))
+  .catch(() => { app.innerHTML = `<p class="empty">Profiles couldn't load right now. Please try again in a minute.</p>`; });
+})();
+</script>

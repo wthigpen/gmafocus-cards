@@ -6,6 +6,9 @@
 | File | What it is |
 |---|---|
 | `card-studio.html` | The Card Studio: build, submit, download and print cards. Also the 3D card viewer (`?view=ID`). |
+| `games.html` | **Game Photos page:** every ShootProof game gallery, newest first, with the Buy 4 get 1 free offer and packages. Setup: `SETUP-GAMES.md`. |
+| `athlete.html` | **College Scout profiles:** a list of athletes for coaches, plus one profile per athlete (`?name=First Last`) with highlights, stats, measurables, contacts and a printable one-sheet. Setup: `SETUP-PROFILES.md`. |
+| `airo/` | **Paste-ready code for GoDaddy Airo** (Game Photos, Recruit list, Ricky Groff's profile). Start with `AIRO-INSTALL.md`. Built by `tools/build-airo.py`. |
 | `cards-gallery.html` | Approved-card gallery for a Cards page or a player profile (`player: "Name"`). |
 | `google-sheet/Code.gs` | Free backend in your Google Sheet: submissions, approval and gallery data. |
 | `roster-template.csv` | Columns for the roster that auto-fills stats. |
